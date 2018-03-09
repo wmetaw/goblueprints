@@ -16,6 +16,7 @@ type templateHandler struct {
 }
 
 // ServeHTTPはHTTPリクエストを処理
+// ServeHTTPの中でテンプレートをコンパイルすると、本当に必要になるまで処理を後回しにできる。これを遅延初期化(lagy initilization)という
 func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	// 一度だけ実行
