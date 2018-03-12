@@ -4,7 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 )
 
-type Client struct {
+type client struct {
 	// socketはこのクライアントのためのwebsocket
 	socket *websocket.Conn
 
@@ -16,7 +16,7 @@ type Client struct {
 }
 
 // websocketからメッセージを読み込み、roomのforwardチャネルへ送信
-func (c *Client) read() {
+func (c *client) read() {
 	for {
 		if _, msg, err := c.socket.ReadMessage(); err == nil {
 			c.room.forward <- msg
@@ -28,7 +28,7 @@ func (c *Client) read() {
 }
 
 // sendチャネルからメッセージを受け取り、WriteMessageに書き出す
-func (c *Client) write() {
+func (c *client) write() {
 	for msg := range c.send {
 		if err := c.socket.WriteMessage(websocket.TextMessage, msg); err != nil {
 			break
