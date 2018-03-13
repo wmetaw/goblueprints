@@ -1,5 +1,11 @@
 package main
 
+import (
+	"github.com/gorilla/websocket"
+	"github.com/labstack/gommon/log"
+	"net/http"
+)
+
 type room struct {
 	// forwardは他のクライアントに転送するためのメッセージを保持するチャネル
 	forward chan []byte
@@ -12,6 +18,31 @@ type room struct {
 
 	// clientsには在室している全てのクライアントが保持される
 	clients map[*client]bool
+}
+
+const (
+	socketBufferSize  = 1024
+	messageBufferSize = 256
+)
+
+var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: messageBufferSize}
+
+func (r *room) ServeHTTP(w http.ResponseWriter, req *http.Request) {
+	socket, err := upgrader.Upgrade(w, req, nil)
+	if err != nil {
+		log.Fatal("ServeHTTP:", err)
+		return
+	}
+
+	client := &client{
+		socket: socket,
+		send:   make(chan []byte, messageBufferSize),
+		room:   r,
+	}
+	r.join <- client
+	defer func() { r.leave <- client }()
+	go client.write()
+	client.read()
 }
 
 func (r *room) run() {
