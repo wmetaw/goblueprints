@@ -22,7 +22,7 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// 一度だけ実行
 	t.once.Do(func() {
 		// テンプレートをコンパイル
-		t.templ = template.Must(template.ParseFiles(filepath.Join("chapter1/chat/templates", t.filename)))
+		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
 
 	// コンパイルしたテンプレートをResponseWriterに出力
