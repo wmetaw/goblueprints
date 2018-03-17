@@ -10,6 +10,9 @@ type Tracer interface {
 }
 
 // io.Writerで受け付けるということは、ユーザーが出力先を自由に選べるということを意味する
+
+// 呼び出し側はTracerインターフェースに合致したオブジェクトを受け取る
+// ユーザーはインターフェースに基いて操作する(privateなtracer型については感知していない)
 func New(w io.Writer) Tracer {
 	return &tracer{out: w}
 }

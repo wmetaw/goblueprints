@@ -8,6 +8,7 @@ import (
 func TestNew(t *testing.T) {
 
 	var buf bytes.Buffer
+
 	tracer := New(&buf)
 
 	if tracer == nil {
