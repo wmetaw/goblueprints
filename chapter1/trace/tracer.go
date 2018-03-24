@@ -3,6 +3,7 @@ package trace
 import (
 	"fmt"
 	"io"
+	"testing"
 )
 
 type Tracer interface {
@@ -24,4 +25,18 @@ type tracer struct {
 func (t *tracer) Trace(a ...interface{}) {
 	t.out.Write([]byte(fmt.Sprint(a...)))
 	t.out.Write([]byte("\n"))
+}
+
+func TestOff(t *testing.T) {
+	var silentTracer Tracer = Off()
+	silentTracer.Trace("データ")
+}
+
+type nilTracer struct{}
+
+func (t *nilTracer) Trace(a ...interface{}) {}
+
+// OffはTraceメソッドの呼び出しを無視するTracerを返します
+func Off() Tracer {
+	return &nilTracer{}
 }

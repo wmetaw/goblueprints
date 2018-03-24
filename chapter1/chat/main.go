@@ -40,14 +40,14 @@ func main() {
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
-	http.Handle("/", &templateHandler{filename: "chat.html"})
+	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/room", r)
 
 	// chatルームを開始
 	go r.run()
 
 	// WEbサーバーの起動
-	log.Println("Webサーバーを開始します。ポート : ", *addr)
+	log.Println("Webサーバーを開始します。ポート ", *addr)
 
 	// webサーバーの開始
 	if err := http.ListenAndServe(*addr, nil); err != nil {
