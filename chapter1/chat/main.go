@@ -3,7 +3,7 @@ package main
 import (
 	"flag"
 	"github.com/stretchr/gomniauth"
-	"github.com/stretchr/gomniauth/providers/facebook"
+	"github.com/stretchr/gomniauth/providers/google"
 	"github.com/wmetaw/goblueprints/chapter1/trace"
 	"html/template"
 	"log"
@@ -41,10 +41,8 @@ func main() {
 	flag.Parse()
 
 	// Gomuniauthのセットアップ
-	gomniauth.SetSecurityKey("HogeKey")
-	gomniauth.WithProviders(
-		facebook.New("", "", "http://localhost:8080/auth/login/google"),
-	)
+	gomniauth.SetSecurityKey("hoge")
+	gomniauth.WithProviders()
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
