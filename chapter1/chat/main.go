@@ -2,6 +2,8 @@ package main
 
 import (
 	"flag"
+	"github.com/stretchr/gomniauth"
+	"github.com/stretchr/gomniauth/providers/facebook"
 	"github.com/wmetaw/goblueprints/chapter1/trace"
 	"html/template"
 	"log"
@@ -37,6 +39,12 @@ func main() {
 	// コマンドライン引数で受け取った値をパース
 	var addr = flag.String("addr", ":8080", "アプリケーションのアドレス")
 	flag.Parse()
+
+	// Gomuniauthのセットアップ
+	gomniauth.SetSecurityKey("HogeKey")
+	gomniauth.WithProviders(
+		facebook.New("", "", "http://localhost:8080/auth/login/google"),
+	)
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
