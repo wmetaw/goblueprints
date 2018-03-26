@@ -1,6 +1,11 @@
 package main
 
-import "net/http"
+import (
+	"fmt"
+	"log"
+	"net/http"
+	"strings"
+)
 
 type authHandler struct {
 	next http.Handler
@@ -23,4 +28,27 @@ func (h *authHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 func MustAuth(handler http.Handler) http.Handler {
 	return &authHandler{next: handler}
+}
+
+/*
+// loginHandlerはサードパーティへのログインの処理を受け持つ
+// パスの形式: /auth/{action}/{provider}
+この関数は内部状態を保持する必要がない為、Handler interfaceを実装していない。
+HnadleFunc関数でhttp.Handleと同様のパスの関連付けができる
+
+type Handler interface {
+	ServeHTTP(ResponseWriter, *Request)
+}
+*/
+func loginHandler(w http.ResponseWriter, r *http.Request) {
+	segs := strings.Split(r.URL.Path, "/")
+	action := segs[2]
+	provider := segs[3]
+	switch action {
+	case "login":
+		log.Println("TODO: ログイン", provider)
+	default:
+		w.WriteHeader(http.StatusNotFound)
+		fmt.Fprintf(w, "アクション%sには非対応です", action)
+	}
 }
