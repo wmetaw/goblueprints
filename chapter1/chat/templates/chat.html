@@ -11,6 +11,7 @@
 <ul id="messages"></ul>
 <form id="chatbox">
     {{.UserData.name}}
+        <br>
     <textarea></textarea>
     <input type="submit" value="Send" />
 </form>
@@ -27,8 +28,9 @@
                 alert("Error: There is no socket connection.");
                 return false;
             }
-            socket.send(msgBox.val());
-            msgBox.val("");
+
+            // send message
+            socket.send(JSON.stringify({"Message": msgBox.val()}));
             return false;
         });
         if (!window["WebSocket"]) {
@@ -38,8 +40,16 @@
             socket.onclose = function() {
                 alert("Connection has been closed.");
             }
+
+            // callback
             socket.onmessage = function(e) {
-                messages.append($("<li>").text(e.data));
+                var msg = eval("("+e.data+")");
+                messages.append(
+                        $("<li>").append(
+                                $("<strong>").text(msg.Name + ": "),
+                                $("<span>").text(msg.Message)
+                        )
+                );
             }
         }
     });

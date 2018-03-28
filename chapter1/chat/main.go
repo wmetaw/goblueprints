@@ -53,8 +53,8 @@ func main() {
 	gomniauth.SetSecurityKey("hoge")
 	gomniauth.WithProviders(
 		google.New(
-			"",
-			"",
+			"147582047063-a05d7e2319pl9kbpk7ocatr055crm1p9.apps.googleusercontent.com",
+			"SEkpfDO6ypO8d7LDMsYIXtVe",
 			"http://localhost:8080/auth/callback/google"),
 	)
 
