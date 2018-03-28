@@ -4,6 +4,7 @@ import (
 	"flag"
 	"github.com/stretchr/gomniauth"
 	"github.com/stretchr/gomniauth/providers/google"
+	"github.com/stretchr/objx"
 	"github.com/wmetaw/goblueprints/chapter1/trace"
 	"html/template"
 	"log"
@@ -30,8 +31,16 @@ func (t *templateHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		t.templ = template.Must(template.ParseFiles(filepath.Join("templates", t.filename)))
 	})
 
+	data := map[string]interface{}{
+		"Host": r.Host,
+	}
+
+	if authCookie, err := r.Cookie("auth"); err == nil {
+		data["UserData"] = objx.MustFromBase64(authCookie.Value)
+	}
+
 	// コンパイルしたテンプレートをResponseWriterに出力
-	t.templ.Execute(w, r)
+	t.templ.Execute(w, data)
 }
 
 func main() {
