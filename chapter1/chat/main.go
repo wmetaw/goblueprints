@@ -42,7 +42,12 @@ func main() {
 
 	// Gomuniauthのセットアップ
 	gomniauth.SetSecurityKey("hoge")
-	gomniauth.WithProviders()
+	gomniauth.WithProviders(
+		google.New(
+			"",
+			"",
+			"http://localhost:8080/auth/callback/google"),
+	)
 
 	r := newRoom()
 	r.tracer = trace.New(os.Stdout)
