@@ -13,7 +13,7 @@ type Avatar interface {
 
 type AuthAvatar struct{}
 
-var UseAvatar AuthAvatar
+var UseAuthAvatar AuthAvatar
 
 func (_ AuthAvatar) GetAvatarURL(c *client) (string, error) {
 	if url, ok := c.userData["avatar_url"]; ok {

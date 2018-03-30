@@ -58,7 +58,10 @@ func main() {
 			"http://localhost:8080/auth/callback/google"),
 	)
 
-	r := newRoom()
+	// AuthAvatarのインスタンスを生成していないため、メモリ使用量が増えることはない
+	// 大量のチャットルームを生成する状況では大幅なメモリの節約が期待できる
+	r := newRoom(UseAuthAvatar)
+
 	r.tracer = trace.New(os.Stdout)
 	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
 	http.Handle("/login", &templateHandler{filename: "login.html"})

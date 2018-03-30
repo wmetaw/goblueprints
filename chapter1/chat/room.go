@@ -23,6 +23,9 @@ type room struct {
 
 	// tracerはチャットルームで行われた操作のログを受け取る
 	tracer trace.Tracer
+
+	// avatar情報
+	avatar Avatar
 }
 
 const (
@@ -32,13 +35,14 @@ const (
 
 var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: messageBufferSize}
 
-func newRoom() *room {
+func newRoom(avatar AuthAvatar) *room {
 	return &room{
 		forward: make(chan *message),
 		join:    make(chan *client),
 		leave:   make(chan *client),
 		clients: make(map[*client]bool),
 		tracer:  trace.Off(),
+		avatar:  avatar,
 	}
 }
 
