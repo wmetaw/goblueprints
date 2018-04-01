@@ -35,7 +35,7 @@ const (
 
 var upgrader = &websocket.Upgrader{ReadBufferSize: socketBufferSize, WriteBufferSize: messageBufferSize}
 
-func newRoom(avatar GravatarAvatar) *room {
+func newRoom(avatar FileSystemAvatar) *room {
 	return &room{
 		forward: make(chan *message),
 		join:    make(chan *client),
