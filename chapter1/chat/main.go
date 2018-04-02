@@ -60,7 +60,7 @@ func main() {
 
 	// AuthAvatarのインスタンスを生成していないため、メモリ使用量が増えることはない
 	// 大量のチャットルームを生成する状況では大幅なメモリの節約が期待できる
-	r := newRoom(UseAuthAvatar)
+	r := newRoom(UseGravatar)
 
 	r.tracer = trace.New(os.Stdout)
 	http.Handle("/", MustAuth(&templateHandler{filename: "chat.html"}))
