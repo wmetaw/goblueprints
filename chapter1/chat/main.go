@@ -14,6 +14,9 @@ import (
 	"sync"
 )
 
+// 現在アクティブなAvatarの実装
+var avatars Avatar = UseFileSystemAvatar
+
 // templは１つのテンプレートを表す
 type templateHandler struct {
 	once     sync.Once
